@@ -18,7 +18,9 @@
   },
   "homepage": "https://github.com/sekai013/memo-in-the-browser#readme",
   "dependencies": {
-    "react": "^15.0.2"
+    "react": "^15.0.2",
+    "redux": "^3.5.2",
+    "uuid": "^2.0.2"
   },
   "devDependencies": {
     "babel-cli": "^6.9.0",
