@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "standard ./src/**/*.js",
+    "build": "mkdir -p dist && node scripts/generate_manifest && cp -r src/statics/* dist && babel src -d dist && mv dist/content.js dist/content_tmp.js && browserify dist/content_tmp.js -o dist/content.js && rm dist/content_tmp.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,19 @@
   "bugs": {
     "url": "https://github.com/sekai013/memo-in-the-browser/issues"
   },
-  "homepage": "https://github.com/sekai013/memo-in-the-browser#readme"
+  "homepage": "https://github.com/sekai013/memo-in-the-browser#readme",
+  "dependencies": {
+    "react": "^15.0.2",
+    "react-dom": "^15.1.0",
+    "react-redux": "^4.4.5",
+    "redux": "^3.5.2",
+    "uuid": "^2.0.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.9.0",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.5.0",
+    "browserify": "^13.0.1",
+    "standard": "^7.1.0"
+  }
 }

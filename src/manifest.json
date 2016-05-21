@@ -1,0 +1,20 @@
+{
+  "manifest_version": 2,
+  "name": "Memo in the browser",
+  "description": "Add anything to favorite website",
+  "icons": {
+  },
+  "browser_action": {
+    "default_icon": {
+      "19": "icons/19.png",
+      "38": "icons/38.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "author": "sekai013"
+}
