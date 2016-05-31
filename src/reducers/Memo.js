@@ -1,4 +1,4 @@
-import { ADD_MEMO, EDIT_MEMO, REMOVE_MEMO } from '../actions/Memo.js'
+import { ADD_MEMO, EDIT_MEMO, LOAD_MEMO, REMOVE_MEMO } from '../actions/Memo.js'
 
 export function memos (state = [], action) {
   switch (action.type) {
@@ -22,6 +22,15 @@ export function memos (state = [], action) {
         return node
       }
       return state.map(editFunc)
+    case LOAD_MEMO:
+      return [
+        ...state,
+        {
+          id: action.id,
+          text: action.text,
+          position: action.position
+        }
+      ]
     case REMOVE_MEMO:
       return state.filter((node) => node.id !== action.id)
     default:
