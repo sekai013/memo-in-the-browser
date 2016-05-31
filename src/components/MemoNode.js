@@ -35,6 +35,7 @@ class MemoNode extends Component {
       }).isRequired,
       text: PropTypes.string.isRequired,
       isFocused: PropTypes.bool.isRequired,
+      editText: PropTypes.func.isRequired,
       focus: PropTypes.func.isRequired,
       blur: PropTypes.func.isRequired,
       removeMe: PropTypes.func.isRequired

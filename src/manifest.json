@@ -2,6 +2,9 @@
   "manifest_version": 2,
   "name": "Memo in the browser",
   "description": "Add anything to favorite website",
+  "permissions": [
+    "storage"
+  ],
   "icons": {
   },
   "browser_action": {
@@ -16,5 +19,8 @@
       "js": ["content.js"]
     }
   ],
+  "background": {
+    "scripts": ["background.js"]
+  },
   "author": "sekai013"
 }
