@@ -13,6 +13,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     editText: (text) => {
       dispatch(editMemo(ownProps.id, text, ownProps.position))
     },
+    moveTo: (position) => {
+      dispatch(editMemo(ownProps.id, ownProps.text, position))
+    },
     focus: () => {
       dispatch(focusOnMemo(ownProps.id))
     },
@@ -36,6 +39,7 @@ class MemoNode extends Component {
       text: PropTypes.string.isRequired,
       isFocused: PropTypes.bool.isRequired,
       editText: PropTypes.func.isRequired,
+      moveTo: PropTypes.func.isRequired,
       focus: PropTypes.func.isRequired,
       blur: PropTypes.func.isRequired,
       removeMe: PropTypes.func.isRequired
@@ -66,6 +70,39 @@ class MemoNode extends Component {
     this.props.removeMe()
   }
 
+  onDragStartNode (event) {
+    this.setState({
+      startPosition: {
+        startX: event.clientX,
+        startY: event.clientY
+      }
+    })
+  }
+
+  onDrag (event) {
+    event.preventDefault()
+    const { clientX, clientY } = event
+    if (clientX && clientY) {
+      this.setState({
+        endPosition: {
+          endX: clientX,
+          endY: clientY
+        }
+      })
+    }
+  }
+
+  onDragEndNode (event) {
+    event.preventDefault()
+    const { startX, startY } = this.state.startPosition
+    const { endX, endY } = this.state.endPosition
+    const { left, top } = this.props.position
+    this.props.moveTo({
+      left: left + endX - startX,
+      top: top + endY - startY
+    })
+  }
+
   render () {
     const style = Object.assign({}, this.props.position, { position: 'absolute' })
 
@@ -77,7 +114,7 @@ class MemoNode extends Component {
       return <p key={i}>{line}</p>
     })
 
-    return <div className='memoNode' onClick={this.props.focus} style={style}>{paragraphs}</div>
+    return <div className='memoNode' onClick={this.props.focus} onDrag={this.onDrag.bind(this)} onDragStart={this.onDragStartNode.bind(this)} onDragEnd={this.onDragEndNode.bind(this)} draggable='true' style={style}>{paragraphs}</div>
   }
 }
 
