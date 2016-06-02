@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { editMemo, focusOnMemo, removeMemo } from '../actions/Memo.js'
-import { hoverMemo } from '../actions/MemoClipboard.js'
+import { hoverMemo, saveCursorPosition } from '../actions/MemoClipboard.js'
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -28,6 +28,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     hover: () => {
       dispatch(hoverMemo(ownProps.id))
+    },
+    saveCursorPosition: (left, top) => {
+      dispatch(saveCursorPosition(left, top))
     }
   }
 }
@@ -109,6 +112,7 @@ class MemoNode extends Component {
   onMouseDownNode (event) {
     if (event.button !== 2) return
     event.stopPropagation()
+    this.props.saveCursorPosition(event.pageX, event.pageY)
   }
 
   render () {
