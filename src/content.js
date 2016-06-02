@@ -71,8 +71,7 @@ window.addEventListener('dblclick', (event) => {
   store.dispatch(action)
 })
 
-window.addEventListener('mousedown', (event) => {
-  if (event.button !== 2) return
+window.addEventListener('contextmenu', (event) => {
   store.dispatch(clearHoveredMemo())
   store.dispatch(saveCursorPosition(event.pageX, event.pageY))
 })

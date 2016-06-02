@@ -109,8 +109,7 @@ class MemoNode extends Component {
     })
   }
 
-  onMouseDownNode (event) {
-    if (event.button !== 2) return
+  onContextMenu (event) {
     event.stopPropagation()
     this.props.saveCursorPosition(event.pageX, event.pageY)
   }
@@ -140,7 +139,7 @@ class MemoNode extends Component {
         onDrag={this.onDragNode.bind(this)}
         onDragEnd={this.onDragEndNode.bind(this)}
         onMouseEnter={this.props.hover}
-        onMouseDown={this.onMouseDownNode.bind(this)}
+        onContextMenu={this.onContextMenu.bind(this)}
         draggable='true'
         style={style}>
         {paragraphs}
