@@ -1,4 +1,5 @@
 import { ADD_MEMO, EDIT_MEMO, LOAD_MEMO, REMOVE_MEMO } from '../actions/Memo.js'
+import { CUT_MEMO } from '../actions/MemoClipboard.js'
 
 export function memos (state = [], action) {
   switch (action.type) {
@@ -32,6 +33,8 @@ export function memos (state = [], action) {
         }
       ]
     case REMOVE_MEMO:
+      return state.filter((node) => node.id !== action.id)
+    case CUT_MEMO:
       return state.filter((node) => node.id !== action.id)
     default:
       return state
