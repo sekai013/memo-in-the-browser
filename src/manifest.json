@@ -3,7 +3,9 @@
   "name": "Memo in the browser",
   "description": "Add anything to favorite website",
   "permissions": [
-    "storage"
+    "storage",
+    "contextMenus",
+    "tabs"
   ],
   "icons": {
   },
