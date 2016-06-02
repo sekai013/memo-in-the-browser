@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { editMemo, focusOnMemo, removeMemo } from '../actions/Memo.js'
+import { hoverMemo } from '../actions/MemoClipboard.js'
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -24,6 +25,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     removeMe: () => {
       dispatch(removeMemo(ownProps.id))
+    },
+    hover: () => {
+      dispatch(hoverMemo(ownProps.id))
     }
   }
 }
@@ -42,7 +46,8 @@ class MemoNode extends Component {
       moveTo: PropTypes.func.isRequired,
       focus: PropTypes.func.isRequired,
       blur: PropTypes.func.isRequired,
-      removeMe: PropTypes.func.isRequired
+      removeMe: PropTypes.func.isRequired,
+      hover: PropTypes.func.isRequired
     }
   }
 
@@ -79,8 +84,7 @@ class MemoNode extends Component {
     })
   }
 
-  onDrag (event) {
-    event.preventDefault()
+  onDragNode (event) {
     const { clientX, clientY } = event
     if (clientX && clientY) {
       this.setState({
@@ -93,7 +97,6 @@ class MemoNode extends Component {
   }
 
   onDragEndNode (event) {
-    event.preventDefault()
     const { startX, startY } = this.state.startPosition
     const { endX, endY } = this.state.endPosition
     const { left, top } = this.props.position
@@ -103,18 +106,42 @@ class MemoNode extends Component {
     })
   }
 
+  onMouseDownNode (event) {
+    if (event.button !== 2) return
+    event.stopPropagation()
+  }
+
   render () {
     const style = Object.assign({}, this.props.position, { position: 'absolute' })
 
     if (this.props.isFocused) {
-      return <textarea className='memoText' ref='memoText' style={style} value={this.props.text} onChange={this.onChangeText.bind(this)} onBlur={this.onBlurText.bind(this)} />
+      return (
+        <textarea className='memoText'
+          ref='memoText'
+          style={style}
+          value={this.props.text}
+          onChange={this.onChangeText.bind(this)}
+          onBlur={this.onBlurText.bind(this)} />
+      )
     }
 
     const paragraphs = this.props.text.split('\n').map((line, i) => {
       return <p key={i}>{line}</p>
     })
 
-    return <div className='memoNode' onClick={this.props.focus} onDrag={this.onDrag.bind(this)} onDragStart={this.onDragStartNode.bind(this)} onDragEnd={this.onDragEndNode.bind(this)} draggable='true' style={style}>{paragraphs}</div>
+    return (
+      <div className='memoNode'
+        onClick={this.props.focus}
+        onDragStart={this.onDragStartNode.bind(this)}
+        onDrag={this.onDragNode.bind(this)}
+        onDragEnd={this.onDragEndNode.bind(this)}
+        onMouseEnter={this.props.hover}
+        onMouseDown={this.onMouseDownNode.bind(this)}
+        draggable='true'
+        style={style}>
+        {paragraphs}
+      </div>
+    )
   }
 }
 
