@@ -5,6 +5,7 @@ import { hoveredMemoId } from './HoveredMemoId.js'
 import { clipboard } from './Clipboard.js'
 import { menuCursorPosition } from './MenuCursorPosition.js'
 import { isExtensionEnabled } from './isExtensionEnabled.js'
+import { isVisibleMenu } from './isVisibleMenu.js'
 
 export default combineReducers({
   memos,
@@ -12,5 +13,6 @@ export default combineReducers({
   hoveredMemoId,
   clipboard,
   menuCursorPosition,
-  isExtensionEnabled
+  isExtensionEnabled,
+  isVisibleMenu
 })
