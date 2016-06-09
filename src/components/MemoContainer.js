@@ -4,7 +4,7 @@ import MemoNode from './MemoNode.js'
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    memos: state.memos
+    memos: state.isExtensionEnabled ? state.memos : []
   }
 }
 
