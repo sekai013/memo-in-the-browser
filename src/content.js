@@ -71,6 +71,7 @@ render(
 )
 
 window.addEventListener('dblclick', (event) => {
+  if (!store.getState().isExtensionEnabled) return false
   const action = addMemo(
     generateUniqId(store.getState().memos),
     { left: event.pageX, top: event.pageY }
