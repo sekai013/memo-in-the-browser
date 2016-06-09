@@ -4,8 +4,10 @@ import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import Reducer from './reducers/Reducer.js'
 import MemoContainer from './components/MemoContainer.js'
+import Menu from './components/Menu.js'
 import { addMemo, loadMemo } from './actions/Memo.js'
 import { copyMemo, cutMemo, clearHoveredMemo, saveCursorPosition } from './actions/MemoClipboard.js'
+import { switchMenu } from './actions/Menu.js'
 import stateToActions from './libs/stateToActions.js'
 import generateUniqId from './libs/generateUniqId.js'
 import getMemoById from './libs/getMemoById.js'
@@ -51,6 +53,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       const uniqId = generateUniqId(memos)
       store.dispatch(loadMemo(uniqId, clipboard, menuCursorPosition))
       return true
+    case 'switchMenu':
+      store.dispatch(switchMenu())
     default:
       return false
   }
@@ -58,7 +62,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 render(
   <Provider store={store}>
-    <MemoContainer />
+    <div>
+      <MemoContainer />
+      <Menu />
+    </div>
   </Provider>,
   container
 )
