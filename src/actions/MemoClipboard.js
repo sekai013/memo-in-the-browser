@@ -17,18 +17,21 @@ export const clearHoveredMemo = () => {
   }
 }
 
-export const cutMemo = (id, text) => {
+export const cutMemo = (id, text, color) => {
   return {
     type: CUT_MEMO,
     id,
-    text
+    text,
+    color
   }
 }
 
-export const copyMemo = (id, text) => {
+export const copyMemo = (id, text, color) => {
   return {
     type: COPY_MEMO,
-    text
+    id,
+    text,
+    color
   }
 }
 
