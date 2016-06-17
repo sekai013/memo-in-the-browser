@@ -4,7 +4,7 @@ export default (state) => {
   const { memos, focusedMemoId } = state
   const actions = []
 
-  actions.push(...memos.map((memo) => loadMemo(memo.id, memo.text, memo.position)))
+  actions.push(...memos.map((memo) => loadMemo(memo.id, memo.text, memo.position, memo.color)))
   actions.push(focusOnMemo(focusedMemoId))
 
   return actions

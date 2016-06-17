@@ -32,7 +32,7 @@ chrome.runtime.sendMessage({
     chrome.runtime.sendMessage({
       type: `${cutAndCopyMode}CutAndCopy`
     })
-    const pasteMode = state.clipboard ? 'enable' : 'disable'
+    const pasteMode = state.clipboard.text ? 'enable' : 'disable'
     chrome.runtime.sendMessage({
       type: `${pasteMode}Paste`
     })
@@ -44,14 +44,14 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   const memo = getMemoById(memos, hoveredMemoId)
   switch (message.type) {
     case 'cutMemo':
-      store.dispatch(cutMemo(memo.id, memo.text))
+      store.dispatch(cutMemo(memo.id, memo.text, memo.color))
       return true
     case 'copyMemo':
-      store.dispatch(copyMemo(memo.id, memo.text))
+      store.dispatch(copyMemo(memo.id, memo.text, memo.color))
       return true
     case 'pasteMemo':
       const uniqId = generateUniqId(memos)
-      store.dispatch(loadMemo(uniqId, clipboard, menuCursorPosition))
+      store.dispatch(loadMemo(uniqId, clipboard.text, menuCursorPosition, clipboard.color))
       return true
     case 'switchMenu':
       store.dispatch(switchMenu())
@@ -72,9 +72,12 @@ render(
 
 window.addEventListener('dblclick', (event) => {
   if (!store.getState().isExtensionEnabled) return false
+  const { memos, subMenu } = store.getState()
+  const { lineColor, backgroundColor } = subMenu
   const action = addMemo(
-    generateUniqId(store.getState().memos),
-    { left: event.pageX, top: event.pageY }
+    generateUniqId(memos),
+    { left: event.pageX, top: event.pageY },
+    { lineColor, backgroundColor }
   )
   store.dispatch(action)
 })
