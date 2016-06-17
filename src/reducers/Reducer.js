@@ -6,6 +6,7 @@ import { clipboard } from './Clipboard.js'
 import { menuCursorPosition } from './MenuCursorPosition.js'
 import { isExtensionEnabled } from './isExtensionEnabled.js'
 import { isVisibleMenu } from './isVisibleMenu.js'
+import { subMenu } from './Submenu.js'
 
 export default combineReducers({
   memos,
@@ -14,5 +15,6 @@ export default combineReducers({
   clipboard,
   menuCursorPosition,
   isExtensionEnabled,
-  isVisibleMenu
+  isVisibleMenu,
+  subMenu
 })
