@@ -44,6 +44,10 @@ class MemoNode extends Component {
         left: PropTypes.number.isRequired
       }).isRequired,
       text: PropTypes.string.isRequired,
+      color: PropTypes.shape({
+        lineColor: PropTypes.string.isRequired,
+        backgroundColor: PropTypes.string.isRequired
+      }),
       isFocused: PropTypes.bool.isRequired,
       editText: PropTypes.func.isRequired,
       moveTo: PropTypes.func.isRequired,
@@ -115,7 +119,11 @@ class MemoNode extends Component {
   }
 
   render () {
-    const style = Object.assign({}, this.props.position, { position: 'absolute' })
+    const style = Object.assign({}, this.props.position, {
+      color: this.props.color.lineColor,
+      backgroundColor: this.props.color.backgroundColor,
+      position: 'absolute'
+    })
 
     if (this.props.isFocused) {
       return (
