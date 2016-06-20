@@ -137,7 +137,7 @@ class MemoNode extends Component {
     }
 
     const paragraphs = this.props.text.split('\n').map((line, i) => {
-      return <p key={i}>{line}</p>
+      return <p key={i} style={{color: this.props.color.lineColor}}>{line}</p>
     })
 
     return (
