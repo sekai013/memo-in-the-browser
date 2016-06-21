@@ -71,3 +71,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       return false
   }
 })
+
+chrome.browserAction.onClicked.addListener((tab) => {
+  chrome.tabs.sendMessage(tab.id, { type: 'switchMenu' })
+})

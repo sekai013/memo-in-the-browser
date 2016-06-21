@@ -9,7 +9,8 @@ export function memos (state = [], action) {
         {
           id: action.id,
           text: '',
-          position: action.position
+          position: action.position,
+          color: action.color
         }
       ]
     case EDIT_MEMO:
@@ -29,7 +30,8 @@ export function memos (state = [], action) {
         {
           id: action.id,
           text: action.text,
-          position: action.position
+          position: action.position,
+          color: action.color
         }
       ]
     case REMOVE_MEMO:

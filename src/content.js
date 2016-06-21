@@ -4,8 +4,10 @@ import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import Reducer from './reducers/Reducer.js'
 import MemoContainer from './components/MemoContainer.js'
+import Menu from './components/Menu.js'
 import { addMemo, loadMemo } from './actions/Memo.js'
 import { copyMemo, cutMemo, clearHoveredMemo, saveCursorPosition } from './actions/MemoClipboard.js'
+import { switchMenu } from './actions/Menu.js'
 import stateToActions from './libs/stateToActions.js'
 import generateUniqId from './libs/generateUniqId.js'
 import getMemoById from './libs/getMemoById.js'
@@ -30,7 +32,7 @@ chrome.runtime.sendMessage({
     chrome.runtime.sendMessage({
       type: `${cutAndCopyMode}CutAndCopy`
     })
-    const pasteMode = state.clipboard ? 'enable' : 'disable'
+    const pasteMode = state.clipboard.text ? 'enable' : 'disable'
     chrome.runtime.sendMessage({
       type: `${pasteMode}Paste`
     })
@@ -42,15 +44,17 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   const memo = getMemoById(memos, hoveredMemoId)
   switch (message.type) {
     case 'cutMemo':
-      store.dispatch(cutMemo(memo.id, memo.text))
+      store.dispatch(cutMemo(memo.id, memo.text, memo.color))
       return true
     case 'copyMemo':
-      store.dispatch(copyMemo(memo.id, memo.text))
+      store.dispatch(copyMemo(memo.id, memo.text, memo.color))
       return true
     case 'pasteMemo':
       const uniqId = generateUniqId(memos)
-      store.dispatch(loadMemo(uniqId, clipboard, menuCursorPosition))
+      store.dispatch(loadMemo(uniqId, clipboard.text, menuCursorPosition, clipboard.color))
       return true
+    case 'switchMenu':
+      store.dispatch(switchMenu())
     default:
       return false
   }
@@ -58,15 +62,22 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
 render(
   <Provider store={store}>
-    <MemoContainer />
+    <div>
+      <MemoContainer />
+      <Menu />
+    </div>
   </Provider>,
   container
 )
 
 window.addEventListener('dblclick', (event) => {
+  if (!store.getState().isExtensionEnabled) return false
+  const { memos, subMenu } = store.getState()
+  const { lineColor, backgroundColor } = subMenu
   const action = addMemo(
-    generateUniqId(store.getState().memos),
-    { left: event.pageX, top: event.pageY }
+    generateUniqId(memos),
+    { left: event.pageX, top: event.pageY },
+    { lineColor, backgroundColor }
   )
   store.dispatch(action)
 })
